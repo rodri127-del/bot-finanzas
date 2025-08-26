@@ -11,23 +11,31 @@ client = tweepy.Client(
     access_token_secret=os.getenv("ACCESS_SECRET")
 )
 
-# Lista de hashtags financieros (elige 2-3 al azar)
+# Lista de hashtags
 hashtags = [
     "#FinanzasPersonales", "#Ahorro", "#Inversion", "#LibertadFinanciera",
-    "#Presupuesto", "#Dinero", "#InterésCompuesto", "#FondoDeEmergencia",
-    "#Gastos", "#Deudas", "#Invertir", "#Productividad", "#EducaciónFinanciera"
+    "#Presupuesto", "#Dinero", "#InterésCompuesto", "#EducaciónFinanciera",
+    "#FondoDeEmergencia", "#Gastos", "#Deudas", "#Productividad"
 ]
 
 # Lee las frases desde el archivo
 with open('frases_finanzas.txt', 'r', encoding='utf-8') as f:
     frases = [line.strip() for line in f.readlines() if line.strip()]
 
-# Elige una frase al azar
-frase = random.choice(frases)
+# Lee los libros desde el archivo
+try:
+    with open('libros.txt', 'r', encoding='utf-8') as f:
+        libros = [line.strip() for line in f.readlines() if line.strip()]
+except FileNotFoundError:
+    libros = []
 
-# Añade 3 hashtags aleatorios (sin repetir)
-frase_con_hashtags = frase + " " + " ".join(random.sample(hashtags, 3))
+# Elige una acción aleatoria: frase normal (80%) o recomendación de libro (20%)
+if libros and random.random() < 0.2:  # 20% de probabilidad
+    tweet = random.choice(libros) + " " + " ".join(random.sample(hashtags, 2))
+else:
+    frase = random.choice(frases)
+    tweet = frase + " " + " ".join(random.sample(hashtags, 3))
 
 # Publica el tweet
-client.create_tweet(text=frase_con_hashtags)
-print(f"✅ Tweet publicado: {frase_con_hashtags}")
+client.create_tweet(text=tweet)
+print(f"✅ Tweet publicado: {tweet}")
