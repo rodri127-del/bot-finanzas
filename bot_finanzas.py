@@ -2,7 +2,7 @@ import tweepy
 import random
 import os
 
-# Configuración de la API (tus claves irán aquí)
+# Configuración de la API
 client = tweepy.Client(
     bearer_token=os.getenv("BEARER_TOKEN"),
     consumer_key=os.getenv("API_KEY"),
@@ -11,6 +11,13 @@ client = tweepy.Client(
     access_token_secret=os.getenv("ACCESS_SECRET")
 )
 
+# Lista de hashtags financieros (elige 2-3 al azar)
+hashtags = [
+    "#FinanzasPersonales", "#Ahorro", "#Inversion", "#LibertadFinanciera",
+    "#Presupuesto", "#Dinero", "#InterésCompuesto", "#FondoDeEmergencia",
+    "#Gastos", "#Deudas", "#Invertir", "#Productividad", "#EducaciónFinanciera"
+]
+
 # Lee las frases desde el archivo
 with open('frases_finanzas.txt', 'r', encoding='utf-8') as f:
     frases = [line.strip() for line in f.readlines() if line.strip()]
@@ -18,6 +25,9 @@ with open('frases_finanzas.txt', 'r', encoding='utf-8') as f:
 # Elige una frase al azar
 frase = random.choice(frases)
 
+# Añade 3 hashtags aleatorios (sin repetir)
+frase_con_hashtags = frase + " " + " ".join(random.sample(hashtags, 3))
+
 # Publica el tweet
-client.create_tweet(text=frase)
-print(f"✅ Tweet publicado: {frase}")
+client.create_tweet(text=frase_con_hashtags)
+print(f"✅ Tweet publicado: {frase_con_hashtags}")
