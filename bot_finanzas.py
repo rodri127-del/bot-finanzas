@@ -29,8 +29,8 @@ try:
 except FileNotFoundError:
     libros = []
 
-# Elige una acción aleatoria: frase normal (80%) o recomendación de libro (20%)
-if libros and random.random() < 0.2:  # 20% de probabilidad
+# Elige una acción aleatoria: frase normal (90%) o recomendación de libro (10%)
+if libros and random.random() < 0.1:  # 10% de probabilidad
     tweet = random.choice(libros) + " " + " ".join(random.sample(hashtags, 2))
 else:
     frase = random.choice(frases)
